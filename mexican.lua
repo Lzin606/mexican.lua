@@ -25,6 +25,34 @@ local ESPEnabled = false
 local EspTab = Window:CreateTab("ESP", 4483362458)
 local PlayerTab = Window:CreateTab("Player", 4483362458)
 local VisualTab = Window:CreateTab("Visual", 4483362458)
+-- Mexican UI - Nova Atualização 2.0 (Lógica Completa)
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+-- Serviços
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+-- Janela Principal
+local Window = Rayfield:CreateWindow({
+    Name = "Mexican | Nova Atualização 2.0",
+    LoadingTitle = "Mexican Script",
+    LoadingSubtitle = "Ativando Funções...",
+    ConfigurationSaving = { Enabled = false },
+    KeySystem = false
+})
+
+-- Variáveis de Controle
+local InfJumpEnabled = false
+local ESPEnabled = false
+local SavedPosition = nil
+
+-- --- TABS ---
+local EspTab = Window:CreateTab("ESP", 4483362458)
+local PlayerTab = Window:CreateTab("Player", 4483362458)
+local VisualTab = Window:CreateTab("Visual", 4483362458)
 local PerformanceTab = Window:CreateTab("Performance", 4483362458)
 local MiscTab = Window:CreateTab("Misc", 4483362458)
 
@@ -93,6 +121,29 @@ UserInputService.JumpRequest:Connect(function()
         LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
     end
 end)
+
+
+PlayerTab:CreateButton({
+    Name="Salvar Posição",
+    Callback=function()
+        local c=LocalPlayer.Character
+        if c and c:FindFirstChild("HumanoidRootPart") then
+            SavedPosition=c.HumanoidRootPart.CFrame
+            Rayfield:Notify({Title="Mexican",Content="Posição salva!",Duration=3})
+        end
+    end
+})
+
+PlayerTab:CreateButton({
+    Name="Teleportar para Posição",
+    Callback=function()
+        local c=LocalPlayer.Character
+        if c and c:FindFirstChild("HumanoidRootPart") and SavedPosition then
+            c.HumanoidRootPart.CFrame=SavedPosition
+            Rayfield:Notify({Title="Mexican",Content="Teleportado!",Duration=3})
+        end
+    end
+})
 
 PlayerTab:CreateSlider({
     Name = "FOV Changer",
